@@ -1,3 +1,180 @@
+# whatif.md 테마 개선 계획
+
+## TL;DR
+
+> **Quick Summary**: `whatif.md` 테마를 comparison과 명확히 차별화하여 "미래 비전 스냅샷" 컨셉으로 재작성
+> 
+> **Deliverables**:
+> - `plugins/visual-generator/references/themes/whatif.md` 전면 개편
+> 
+> **Estimated Effort**: Quick
+> **Parallel Execution**: NO - 단일 파일 수정
+> **Critical Path**: Task 1 (단일 작업)
+
+---
+
+## Context
+
+### Original Request
+comparison과 whatif 테마 간 차이가 불명확함. comparison은 좋으나, whatif는 확실한 미래 상을 보여줘야 함.
+
+### 분석 결과
+| 현재 문제 | 원인 |
+|----------|------|
+| whatif가 약한 comparison처럼 읽힘 | Section-Flow 레이아웃이 프로세스 설명처럼 보임 |
+| "미래 장면" 개념이 추상적 | 구체적 장면 구성 가이드 없음 |
+| 두 테마 선택 기준 불명확 | comparison vs whatif 명시적 비교표 없음 |
+
+---
+
+## Work Objectives
+
+### Core Objective
+whatif.md를 "단일 미래 장면 몰입" 테마로 재정의하여 comparison과 명확히 구분
+
+### Concrete Deliverables
+- `plugins/visual-generator/references/themes/whatif.md` 전면 개편
+
+### Definition of Done
+- [x] comparison vs whatif 차이표 존재
+- [x] "Scene Composition" 섹션 (WHO, DOING, WHERE, RESULT, WHEN)
+- [x] "Immersion Techniques" 섹션
+- [x] 좋은 예 / 나쁜 예 구체적 장면 묘사
+- [x] "Before 언급 금지" 규칙 명시
+
+### Must Have
+- comparison과의 명확한 차별점 설명
+- 장면 구성 5요소 가이드
+- 구체적 좋은 예/나쁜 예
+
+### Must NOT Have (Guardrails)
+- Before/After 비교 구조 (comparison 영역)
+- 추상적 "미래가 좋아진다" 표현
+- 프로세스 설명 레이아웃
+
+---
+
+## Verification Strategy
+
+### Test Decision
+- **Infrastructure exists**: N/A (문서 수정)
+- **Automated tests**: None
+- **Agent-Executed QA**: YES
+
+---
+
+## TODOs
+
+- [x] 1. whatif.md 전면 개편
+
+  **What to do**:
+  1. 기존 whatif.md 읽기
+  2. 아래 새 컨텐츠로 **전체 교체** (Edit 아닌 Write 사용)
+  
+  **새 컨텐츠 구조**:
+  ```
+  # What-If (미래 비전 스냅샷) 테마
+  
+  ## 개요
+  - 핵심 원칙: "Before가 없다. 이미 After 안에 서 있다."
+  
+  ## Comparison과의 차이 (CRITICAL)
+  - 구조/관점/초점/수치/시제/감정 비교표
+  - 선택 가이드
+  
+  ## 색상 팔레트
+  - 기존 유지 (틸, 블루, 오렌지, 크림)
+  
+  ## 권장 레이아웃
+  - Future Snapshot (최우선) - 단일 장면 집중
+  - Hero Statement (강조형) - 대형 선언문 + 하단 장면들
+  
+  ## Scene Composition (장면 구성 필수 요소)
+  - WHO: 행위자 (실제 사용자/수혜자)
+  - DOING: 행동 (정지 상태 금지)
+  - WHERE: 환경 (맥락 배경)
+  - RESULT: 성과 지표 (장면 안에 자연스럽게)
+  - WHEN: 시간 단서 (일상 암시)
+  
+  ## Immersion Techniques (몰입 기법)
+  - 현재형으로 말하기
+  - 구체적 수치 배치
+  - 관점 설정 (1인칭/3인칭/시스템)
+  
+  ## 장면 묘사 예시
+  - 좋은 예: AI 진단 시스템 - 구체적 장면 묘사
+  - 나쁜 예: Before/After 비교 구조 → comparison으로 빠진 안티패턴
+  
+  ## 적합한/부적합한 케이스
+  
+  ## 렌더링 금지 요소
+  - 기존 + "Before 언급 금지" 추가
+  ```
+
+  **Must NOT do**:
+  - 기존 파일 일부만 수정 (전체 교체)
+  - Before/After 비교 구조 포함
+  - 추상적 표현 사용
+
+  **Recommended Agent Profile**:
+  - **Category**: `quick`
+    - Reason: 단일 파일 수정, 명확한 요구사항
+  - **Skills**: 없음
+    - Reason: 일반 markdown 작성, 특수 스킬 불필요
+
+  **Parallelization**:
+  - **Can Run In Parallel**: NO
+  - **Parallel Group**: Sequential
+  - **Blocks**: 없음
+  - **Blocked By**: 없음
+
+  **References**:
+  - `plugins/visual-generator/references/themes/whatif.md` - 현재 파일 (전체 교체 대상)
+  - `plugins/visual-generator/references/themes/comparison.md` - 차별화 기준
+
+  **Acceptance Criteria**:
+
+  **Agent-Executed QA Scenarios:**
+
+  ```
+  Scenario: whatif.md 구조 검증
+    Tool: Bash (grep)
+    Preconditions: 파일 수정 완료
+    Steps:
+      1. grep -c "Comparison과의 차이" whatif.md → 1 이상
+      2. grep -c "Scene Composition" whatif.md → 1 이상
+      3. grep -c "Immersion Techniques" whatif.md → 1 이상
+      4. grep -c "좋은 예" whatif.md → 1 이상
+      5. grep -c "나쁜 예" whatif.md → 1 이상
+    Expected Result: 모든 핵심 섹션 존재
+    Evidence: grep 출력 결과
+
+  Scenario: Before 언급 금지 규칙 존재 확인
+    Tool: Bash (grep)
+    Steps:
+      1. grep -c "Before 언급" whatif.md → 1 이상
+    Expected Result: 금지 규칙 명시됨
+    Evidence: grep 출력 결과
+
+  Scenario: comparison 차별화표 존재 확인
+    Tool: Bash (grep)
+    Steps:
+      1. grep -A 10 "Comparison과의 차이" whatif.md | grep -c "|"
+    Expected Result: 테이블 형식 (| 문자 다수)
+    Evidence: grep 출력 결과
+  ```
+
+  **Commit**: YES
+  - Message: `docs(visual-generator): differentiate whatif theme from comparison`
+  - Files: `plugins/visual-generator/references/themes/whatif.md`
+
+---
+
+## 새 whatif.md 전체 컨텐츠
+
+아래 내용을 **그대로** `plugins/visual-generator/references/themes/whatif.md`에 작성:
+
+```markdown
 # What-If (미래 비전 스냅샷) 테마
 
 ## 개요
@@ -242,3 +419,23 @@ What-If 장면은 다음 **5가지 요소**를 모두 포함해야 합니다:
 
 텍스트의 위치, 크기, 색상은 INSTRUCTION과 CONFIGURATION에서 설명하고,
 CONTENT에는 **순수한 텍스트 내용만** 포함합니다.
+```
+
+---
+
+## Success Criteria
+
+### Verification Commands
+```bash
+# 핵심 섹션 존재 확인
+grep -c "Comparison과의 차이" plugins/visual-generator/references/themes/whatif.md  # Expected: 1+
+grep -c "Scene Composition" plugins/visual-generator/references/themes/whatif.md  # Expected: 1+
+grep -c "Immersion Techniques" plugins/visual-generator/references/themes/whatif.md  # Expected: 1+
+```
+
+### Final Checklist
+- [x] "Comparison과의 차이" 섹션 존재
+- [x] "Scene Composition" 섹션 (5가지 요소)
+- [x] "Immersion Techniques" 섹션
+- [x] 좋은 예 / 나쁜 예 구체적 예시
+- [x] "Before 언급 금지" 규칙 명시
