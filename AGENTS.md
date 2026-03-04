@@ -1,7 +1,7 @@
 # TOOLBOX PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-02-27T00:00:00+09:00
-**Version:** 2.5.0
+**Generated:** 2026-03-04T00:00:00+09:00
+**Version:** 2.6.0
 **Branch:** main
 
 ## OVERVIEW
@@ -13,7 +13,7 @@ AI agent skill/plugin toolbox for Korean government R&D proposal (ISD) auto-gene
 ```
 toolbox/
 ├── .claude-plugin/
-│   └── marketplace.json              # Single marketplace registry (11 plugins)
+│   └── marketplace.json              # Single marketplace registry (12 plugins)
 └── plugins/
     ├── isd-generator/                # ISD 연구계획서 통합 플러그인 (Agent + Command + Skill)
     │   ├── agents/                   # 6 agents
@@ -64,8 +64,14 @@ toolbox/
      │   ├── commands/
      │   │   └── hwpx-generate.md      # HWPX 문서 생성 오케스트레이터 command
      │   └── skills/                   # 2 skills (hwpx-core, hwpx-templates)
-     └── worktree-workflow/            # Git worktree 워크플로우
-         └── agents/                   # 1 agent
+     ├── worktree-workflow/            # Git worktree 워크플로우
+     │   └── agents/                   # 1 agent
+     └── pdf-md-generator/            # PDF → Markdown 변환 플러그인 (Agent + Command + Skill)
+         ├── agents/                   # 1 agent (pdf-converter)
+         ├── commands/
+         │   └── pdf-convert.md        # PDF 변환 오케스트레이터 command
+         └── skills/
+             └── pdf-conversion/       # 변환 스크립트 (pdf_to_md.py)
 ```
 
 ## WHERE TO LOOK
@@ -85,7 +91,8 @@ toolbox/
 | HWPX 문서 생성 | `plugins/hwpx-generator/commands/hwpx-generate.md` | XML-first + ZIP치환 |
 | HWPX XML-first 빌드 | `plugins/hwpx-generator/skills/hwpx-core/SKILL.md` | build_hwpx.py 기반 |
 | HWPX 템플릿 치환 | `plugins/hwpx-generator/skills/hwpx-templates/SKILL.md` | fix_namespaces.py 필수 |
-| Plugin registry | `.claude-plugin/marketplace.json` | All 11 plugins listed |
+| PDF to Markdown 변환 | `plugins/pdf-md-generator/commands/pdf-convert.md` | PyMuPDF + pdfplumber 기반 |
+| Plugin registry | `.claude-plugin/marketplace.json` | All 12 plugins listed |
 
 **Note**: Original `examples/` folder with real company names archived in local branch `archive/examples-backup` (not pushed to public repository).
 
@@ -285,6 +292,10 @@ python plugins/paper-style-generator/skills/paper-style-toolkit/scripts/md_postp
 python plugins/paper-style-generator/skills/paper-style-toolkit/scripts/style_extractor.py \
   --input-dir [tagged_md_folder] \
   --output-file [analysis.json]
+
+# PDF to Markdown: Convert PDFs with layout analysis (requires PyMuPDF, pdfplumber)
+TMP=D:/AI/temp TEMP=D:/AI/temp python plugins/pdf-md-generator/skills/pdf-conversion/scripts/pdf_to_md.py \
+  -i [pdf_folder] [--only "filename.pdf"] [--overwrite]
 ```
 
 ## CLAUDE CODE MARKETPLACE RULES

@@ -5,7 +5,7 @@
     "url": "https://github.com/orientpine"
   },
   "metadata": {
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "ISD 연구계획서 생성, 시각자료 프롬프트, DC연금 포트폴리오 분석을 위한 Claude Code 플러그인 마켓플레이스"
   },
   "plugins": [
@@ -149,6 +149,15 @@
       "description": "Git worktree를 활용한 Claude Code 병렬 실행 워크플로우",
       "strict": true,
       "agents": ["./agents/worktree.md"]
+    },
+    {
+      "name": "pdf-md-generator",
+      "source": "./plugins/pdf-md-generator",
+      "description": "PDF to Markdown 변환 플러그인. 복잡한 레이아웃, 표, 수식을 포함한 PDF를 고품질 Markdown으로 변환합니다.",
+      "version": "1.0.0",
+      "strict": true,
+      "agents": ["./agents/pdf-converter.md"],
+      "skills": ["./skills"]
     }
   ]
 }

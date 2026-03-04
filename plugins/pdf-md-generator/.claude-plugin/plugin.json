@@ -1,0 +1,10 @@
+{
+  "name": "pdf-md-generator",
+  "version": "1.0.0",
+  "description": "PDF to Markdown converter with advanced layout analysis, table detection, and equation rendering",
+  "author": {
+    "name": "Baekdong Cha",
+    "email": "orientpine@gmail.com"
+  },
+  "license": "MIT"
+}
