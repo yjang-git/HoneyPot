@@ -1,0 +1,10 @@
+{
+  "name": "powder-analyzer",
+  "version": "3.0.0",
+  "description": "배터리 전극 파우더 물성 분석 실험 워크플로우 생성 플러그인. ASTM 8종 규격 + Jenike 정밀 치수 + 파라미터 3-분류 체계 + NMC811 특화 데이터 + custom/standard 장비 모드 + 3-AI 검증 시스템.",
+  "author": {
+    "name": "Baekdong Cha",
+    "email": "orientpine@gmail.com"
+  },
+  "license": "MIT"
+}

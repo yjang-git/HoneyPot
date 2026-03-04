@@ -5,7 +5,7 @@
     "url": "https://github.com/orientpine"
   },
   "metadata": {
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "ISD 연구계획서 생성, 시각자료 프롬프트, DC연금 포트폴리오 분석을 위한 Claude Code 플러그인 마켓플레이스"
   },
   "plugins": [
@@ -157,6 +157,19 @@
       "version": "1.0.0",
       "strict": true,
       "agents": ["./agents/pdf-converter.md"],
+      "skills": ["./skills"]
+    },
+    {
+      "name": "powder-analyzer",
+      "source": "./plugins/powder-analyzer",
+      "description": "배터리 전극 파우더 물성 분석 실험 워크플로우 생성 플러그인. ASTM 8종 + Jenike 정밀 치수 + 파라미터 3-분류 체계 + NMC811 특화 + custom/standard 장비 모드 + 3-AI 검증.",
+      "version": "3.0.0",
+      "strict": true,
+      "agents": [
+        "./agents/powder-analyzer.md",
+        "./agents/powder-analyzer-validator.md",
+        "./agents/powder-analyzer-replicator.md"
+      ],
       "skills": ["./skills"]
     }
   ]

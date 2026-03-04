@@ -1,19 +1,19 @@
 # TOOLBOX PROJECT KNOWLEDGE BASE
 
 **Generated:** 2026-03-04T00:00:00+09:00
-**Version:** 2.6.0
+**Version:** 2.8.0
 **Branch:** main
 
 ## OVERVIEW
 
-AI agent skill/plugin toolbox for Korean government R&D proposal (ISD) auto-generation, presentation figure creation, academic paper writing style extraction, and **meta-plugin for auto-generating paper writing skill sets**. Claude plugin ecosystem with orchestrated multi-agent workflows.
+AI agent skill/plugin toolbox for Korean government R&D proposal (ISD) auto-generation, presentation figure creation, academic paper writing style extraction, **meta-plugin for auto-generating paper writing skill sets**, and **battery powder characterization experiment workflow generation (v3.0.0 — Jenike precise dimensions, parameter 3-classification, custom/standard equipment mode, NMC811 specialization)**. Claude plugin ecosystem with orchestrated multi-agent workflows.
 
 ## STRUCTURE
 
 ```
 toolbox/
 ├── .claude-plugin/
-│   └── marketplace.json              # Single marketplace registry (12 plugins)
+│   └── marketplace.json              # Single marketplace registry (13 plugins)
 └── plugins/
     ├── isd-generator/                # ISD 연구계획서 통합 플러그인 (Agent + Command + Skill)
     │   ├── agents/                   # 6 agents
@@ -66,12 +66,19 @@ toolbox/
      │   └── skills/                   # 2 skills (hwpx-core, hwpx-templates)
      ├── worktree-workflow/            # Git worktree 워크플로우
      │   └── agents/                   # 1 agent
-     └── pdf-md-generator/            # PDF → Markdown 변환 플러그인 (Agent + Command + Skill)
-         ├── agents/                   # 1 agent (pdf-converter)
+     ├── pdf-md-generator/            # PDF → Markdown 변환 플러그인 (Agent + Command + Skill)
+     │   ├── agents/                   # 1 agent (pdf-converter)
+     │   ├── commands/
+     │   │   └── pdf-convert.md        # PDF 변환 오케스트레이터 command
+     │   └── skills/
+     │       └── pdf-conversion/       # 변환 스크립트 (pdf_to_md.py)
+     └── powder-analyzer/              # 배터리 파우더 물성 분석 v3.0.0 (Jenike 정밀치수, 파라미터 3-분류, custom/standard 장비)
+         ├── agents/                   # 3 agents (powder-analyzer, powder-analyzer-validator, powder-analyzer-replicator)
          ├── commands/
-         │   └── pdf-convert.md        # PDF 변환 오케스트레이터 command
+         │   └── experiment-generate.md # 실험 생성 오케스트레이터 command (3-AI 검증, equipment_mode 지원)
          └── skills/
-             └── pdf-conversion/       # 변환 스크립트 (pdf_to_md.py)
+             ├── powder-characterization/ # ASTM 8종, Jenike D6128 정밀치수, 파라미터 3-분류, NMC811 특화, custom apparatus
+             └── verification-system/    # 3-AI 검증 시스템 (Executor-Validator-Replicator)
 ```
 
 ## WHERE TO LOOK
@@ -92,7 +99,8 @@ toolbox/
 | HWPX XML-first 빌드 | `plugins/hwpx-generator/skills/hwpx-core/SKILL.md` | build_hwpx.py 기반 |
 | HWPX 템플릿 치환 | `plugins/hwpx-generator/skills/hwpx-templates/SKILL.md` | fix_namespaces.py 필수 |
 | PDF to Markdown 변환 | `plugins/pdf-md-generator/commands/pdf-convert.md` | PyMuPDF + pdfplumber 기반 |
-| Plugin registry | `.claude-plugin/marketplace.json` | All 12 plugins listed |
+| 배터리 파우더 실험 설계 | `plugins/powder-analyzer/commands/experiment-generate.md` | 3-AI 검증, ASTM 8종, Jenike 정밀치수, equipment_mode(standard/custom), NMC811 특화 |
+| Plugin registry | `.claude-plugin/marketplace.json` | All 13 plugins listed |
 
 **Note**: Original `examples/` folder with real company names archived in local branch `archive/examples-backup` (not pushed to public repository).
 
@@ -145,6 +153,49 @@ toolbox/
 - Verification docs: Generate BEFORE main content (절대 스킵 금지)
 - Task delegation: Use `Task(subagent_type=...)` - never analyze directly
 - Auto mode: `auto_mode=true` skips user confirmations
+
+### 프로젝트 작업 디렉토리 규칙 (MyVault)
+
+모든 프로젝트 작업은 아래 디렉토리 구조를 따른다.
+
+**경로 구조:**
+
+```
+MyVault/
+├── projects/{작업명}/              ← 작업 디렉토리 (출력물 저장)
+│   ├── {작업명} ver1/             ← 버전 1 출력물
+│   │   ├── output1.md
+│   │   └── output2.md
+│   ├── {작업명} ver2/             ← 버전 2 출력물
+│   ├── {작업명} ver3/             ← ...
+│   └── (기타 작업 파일)
+└── resources/{작업명}/             ← 참고 자료 (ASTM, 논문, PDF 등)
+    ├── astm/
+    ├── paper/
+    └── ...
+```
+
+**규칙:**
+
+| 항목 | 규칙 |
+|------|------|
+| **작업 디렉토리** | `MyVault/projects/{작업명}/` |
+| **참고 자료** | `MyVault/resources/{작업명}/` 내 모든 파일을 참조 |
+| **출력 형식** | Markdown (.md) 파일 |
+| **버전 관리** | `{작업명} ver1/`, `{작업명} ver2/`, ... 폴더로 버전 분리 |
+| **버전 생성 시점** | 주요 수정이 있을 때마다 새 버전 폴더 생성 |
+| **이전 버전** | 절대 삭제하지 않음 (이력 보존) |
+
+**버전 폴더 네이밍:**
+- `{작업명} ver1` — 초기 버전
+- `{작업명} ver2` — 1차 수정
+- `{작업명} verN` — N-1차 수정
+
+**작업 흐름:**
+1. `MyVault/resources/{작업명}/`에서 참고 자료 전량 읽기
+2. `MyVault/projects/{작업명}/`에서 기존 작업 파일 확인
+3. 최신 버전 폴더 확인 → 다음 버전 번호 결정
+4. 새 버전 폴더 생성 후 출력물(.md) 저장
 
 ## SCRIPT PATH RESOLUTION (MANDATORY)
 
